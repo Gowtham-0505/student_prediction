@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Pass Fail Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f0f2f5;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .container {
+            background: white;
+            width: 350px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 8px;
+        }
+
+        button {
+            padding: 12px;
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Student Performance</h2>
+
+    <input type="number" id="python" placeholder="Python Marks" min="0" max="100">
+    <input type="number" id="maths" placeholder="Maths Marks" min="0" max="100">
+    <input type="number" id="science" placeholder="Science Marks" min="0" max="100">
+    <input type="number" id="english" placeholder="English Marks" min="0" max="100">
+    <input type="number" id="computer" placeholder="Computer Marks" min="0" max="100">
+
+    <button onclick="predict()">Predict Result</button>
+
+    <div id="result"></div>
+
+</div>
+
+<script>
+
+async function predict() {
+
+    const data = {
+        python: Number(document.getElementById("python").value),
+        maths: Number(document.getElementById("maths").value),
+        science: Number(document.getElementById("science").value),
+        english: Number(document.getElementById("english").value),
+        computer: Number(document.getElementById("computer").value)
+    };
+
+    const response = await fetch("/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+
+    document.getElementById("result").innerText =
+        "Prediction: " + result.prediction;
+}
+
+</script>
+
+</body>
+</html>
